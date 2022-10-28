@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tekton-java-demo
+  name: tekton-java-demo
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tekton-java-demo
+  template:
+    metadata:
+      labels:
+        app: tekton-java-demo
+    spec:
+      imagePullSecrets:
+      - name: docker-registry
+      containers:
+        - name: tekton-java-demo
+          image: registry.wzxmt.com/tekton-java-demo:TAG
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+              name: "http"
+              protocol: "TCP"
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: "/actuator/info"
+              port: 8080
+              scheme: "HTTP"
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: "/actuator/info"
+              port: 8080
+              scheme: "HTTP"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tekton-java-demo
+  name: tekton-java-demo
+  namespace: default
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: tekton-java-demo
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: tekton-java-demo
+  namespace: default
+  labels:
+    app: tekton-java-demo
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`test.wzxmt.com`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: tekton-java-demo
+      port: 8080
