@@ -4,7 +4,6 @@ metadata:
   labels:
     app: tekton-java-demo
   name: tekton-java-demo
-  namespace: default
 spec:
   replicas: 1
   selector:
@@ -52,7 +51,6 @@ metadata:
   labels:
     app: tekton-java-demo
   name: tekton-java-demo
-  namespace: default
 spec:
   ports:
   - port: 8080
@@ -65,7 +63,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: tekton-java-demo
-  namespace: default
   labels:
     app: tekton-java-demo
 spec:
