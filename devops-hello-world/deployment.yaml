@@ -28,7 +28,7 @@ spec:
       - name: docker-registry
       containers:
         - name: devops-hello-world
-          image: registry.wzxmt.com/devops-hello-world:TAG
+          image: registry.wzxmt.com/devops-hello-world:v0.3.0-20221030-005325
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
