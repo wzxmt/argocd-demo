@@ -18,7 +18,7 @@ spec:
       - name: docker-registry
       containers:
         - name: tekton-java-demo
-          image: registry.wzxmt.com/tekton-java-demo:v0.3.0-20221029-170608
+          image: registry.wzxmt.com/tekton-java-demo:v0.3.0-20221029-171127
           imagePullPolicy: "Always"
           ports:
             - containerPort: 8080
